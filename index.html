@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta
       name="viewport"
+      class="p-[0]"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
     <title>Petualangan Anak Pintar - EduGame SD Interaktif</title>
@@ -106,13 +107,35 @@
         animation: float 6s infinite ease-in-out;
       }
 
-      /* Tombol efek gelembung saat ditekan */
-      .bubble-btn {
-        transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        touch-action: manipulation;
+      /* Animasi Bergerak Meliuk ala Infinity Loop */
+      @keyframes infinity-loop {
+        0% {
+          transform: translate(0, 0) rotate(0deg) scale(1);
+        }
+        25% {
+          transform: translate(6px, -4px) rotate(2deg) scale(1.02);
+        }
+        50% {
+          transform: translate(0, -8px) rotate(-2deg) scale(1);
+        }
+        75% {
+          transform: translate(-6px, -4px) rotate(2deg) scale(1.02);
+        }
+        100% {
+          transform: translate(0, 0) rotate(0deg) scale(1);
+        }
       }
-      .bubble-btn:active {
-        transform: scale(0.94);
+      .animate-infinity {
+        animation: infinity-loop 4s infinite ease-in-out;
+      }
+
+      /* Tombol efek gelembung dan transisi penekanan */
+      .bubble-btn {
+        transition:
+          transform 0.1s ease,
+          shadow 0.1s ease,
+          background 0.2s ease;
+        touch-action: manipulation;
       }
 
       /* Animasi bergetar lembut untuk tombol listening */
@@ -272,69 +295,89 @@
     <main
       class="w-full max-w-4xl bg-white/90 backdrop-blur-lg rounded-3xl shadow-xl border-4 border-indigo-400/50 p-3 sm:p-5 md:p-8 min-h-[480px] sm:min-h-[550px] flex flex-col justify-between relative overflow-hidden z-10"
     >
-      <!-- Interactive Background Decors (Stars & Clouds) -->
-      <span
-        class="absolute top-4 left-4 text-2xl opacity-15 animate-float"
-        style="animation-delay: 0s"
-        >⭐</span
-      >
-      <span
-        class="absolute bottom-6 right-6 text-3xl opacity-15 animate-float"
-        style="animation-delay: 2s"
-        >🎈</span
-      >
-      <span
-        class="absolute top-1/2 right-4 text-2xl opacity-10 animate-float"
-        style="animation-delay: 4s"
-        >🚀</span
-      >
-      <span
-        class="absolute bottom-1/2 left-4 text-2xl opacity-10 animate-float"
-        style="animation-delay: 1s"
-        >🧩</span
-      >
-
       <!-- SCREEN 0: LANDING PAGE -->
       <section
         id="screen-landing"
-        class="flex flex-col items-center text-center py-4 sm:py-8 gap-4 sm:gap-6 justify-center my-auto w-full"
+        class="flex flex-col items-center text-center py-6 sm:py-10 gap-5 sm:gap-7 justify-center my-auto w-full relative"
       >
-        <div class="animate-bounce-playful mb-1">
+        <!-- ORNAMEN DEKORASI INTERAKTIF YANG LEBIH HIDUP -->
+        <span
+          class="absolute top-0 left-2 text-3xl sm:text-4xl select-none filter drop-shadow animate-float"
+          style="animation-duration: 4s"
+          >⭐</span
+        >
+        <span
+          class="absolute bottom-4 right-2 text-3xl sm:text-4xl select-none filter drop-shadow animate-float"
+          style="animation-delay: 1.5s; animation-duration: 5s"
+          >🎈</span
+        >
+        <span
+          class="absolute top-1/3 right-2 text-3xl sm:text-4xl select-none filter drop-shadow animate-float"
+          style="animation-delay: 3s; animation-duration: 6s"
+          >🚀</span
+        >
+        <span
+          class="absolute bottom-1/3 left-2 text-3xl sm:text-4xl select-none filter drop-shadow animate-float"
+          style="animation-delay: 0.5s; animation-duration: 4.5s"
+          >🧩</span
+        >
+
+        <!-- WADAH LOGO DENGAN ANIMASI INFINITY LOOP -->
+        <div
+          class="animate-infinity mb-2 transform hover:scale-105 transition-transform duration-300"
+        >
           <img
-            src="https://placehold.co/140x140/6366f1/ffffff?text=%F0%9F%AA%81+SmartKids"
-            alt="Logo Game"
-            class="rounded-full border-4 border-indigo-500 shadow-lg w-28 h-28 sm:w-36 sm:h-36"
+            src="new logo.png"
+            alt="Logo Desain'in"
+            class="w-32 h-auto sm:w-40 object-contain filter drop-shadow-lg"
             onerror="
               this.src =
-                'https://placehold.co/120x120/6366f1/ffffff?text=EduGame'
+                'https://placehold.co/140x140/6366f1/ffffff?text=EduGame'
             "
           />
         </div>
-        <div>
+
+        <!-- JUDUL UTAMA DENGAN GRADASI WARNA YANG MENAWAN -->
+        <div class="space-y-2 max-w-xl">
           <h2
-            class="text-3xl sm:text-4xl md:text-5xl font-black text-indigo-600 mb-1 sm:mb-2 leading-tight"
+            class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight pb-1 leading-tight select-none"
           >
-            Petualangan<br />Anak Pintar!
+            <span
+              class="bg-gradient-to-r from-purple-700 via-indigo-600 to-blue-500 bg-clip-text text-transparent filter drop-shadow-[0_3px_3px_rgba(0,0,0,0.1)]"
+            >
+              Petualangan<br />Anak Pintar!
+            </span>
           </h2>
           <p
-            class="text-gray-600 text-xs sm:text-sm md:text-base max-w-md mx-auto px-2"
+            class="text-gray-600 text-xs sm:text-sm md:text-base font-medium max-w-md mx-auto px-4 leading-relaxed"
           >
             Game edukasi interaktif seru dengan soal harian yang selalu baru dan
             berbeda setiap hari untuk Kelas 1 - 6 SD! 🚀
           </p>
         </div>
-        <div class="flex flex-col gap-2.5 w-full max-w-sm mt-2 px-4">
+
+        <!-- TOMBOL PREMIUM BERGAYA 3D TACTILE BUBBLE -->
+        <div class="flex flex-col gap-3.5 w-full max-w-sm mt-3 px-6 z-10">
+          <!-- Tombol Mulai Petualangan -->
           <button
             onclick="goToCharacterCreation()"
-            class="bg-gradient-to-r from-emerald-400 to-green-500 hover:from-emerald-500 hover:to-green-600 text-white font-black py-3 sm:py-4 px-4 sm:px-6 rounded-2xl shadow-md border-b-4 border-green-700 text-lg sm:text-xl tracking-wider bubble-btn flex items-center justify-center gap-2"
+            class="group bg-gradient-to-r from-emerald-400 to-green-500 hover:from-emerald-500 hover:to-green-600 text-white font-black py-3.5 sm:py-4 px-6 rounded-2xl shadow-[0_4px_0_#15803d] hover:shadow-[0_2px_0_#15803d] hover:translate-y-[2px] active:translate-y-[4px] active:shadow-none text-lg sm:text-xl tracking-wider bubble-btn flex items-center justify-center gap-3 transition-all duration-150"
           >
-            <i class="fas fa-play"></i> MULAI PETUALANGAN
+            <i
+              class="fas fa-play transform group-hover:scale-110 group-hover:rotate-12 transition-transform"
+            ></i>
+            <span>MULAI PETUALANGAN</span>
           </button>
+
+          <!-- Tombol Pengaturan Game -->
           <button
             onclick="showSettingsModal()"
-            class="bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white font-bold py-2.5 sm:py-3.5 px-4 sm:px-6 rounded-2xl shadow-sm border-b-4 border-indigo-800 text-sm sm:text-base bubble-btn flex items-center justify-center gap-2"
+            class="group bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-bold py-3 sm:py-3.5 px-6 rounded-2xl shadow-[0_4px_0_#3730a3] hover:shadow-[0_2px_0_#3730a3] hover:translate-y-[2px] active:translate-y-[4px] active:shadow-none text-sm sm:text-base bubble-btn flex items-center justify-center gap-2 transition-all duration-150"
           >
-            <i class="fas fa-cog"></i> PENGATURAN GAME
+            <i
+              class="fas fa-cog transform group-hover:rotate-90 transition-transform duration-300"
+            ></i>
+            <span>PENGATURAN GAME</span>
           </button>
         </div>
       </section>
@@ -366,10 +409,12 @@
               class="block text-indigo-700 font-bold mb-2 text-xs sm:text-sm"
               ><i class="fas fa-user-tag mr-1.5"></i>Nama Pahlawanmu:</label
             >
+            <!-- DIUBAH: Mengosongkan value bawaan dan menambahkan placeholder -->
             <input
               type="text"
               id="playerName"
-              value="Budi"
+              value=""
+              placeholder="Ketik namamu di sini..."
               maxlength="12"
               class="w-full px-4 py-2.5 rounded-xl border-2 border-indigo-200 focus:border-indigo-500 outline-none text-sm sm:text-base font-bold"
             />
@@ -1483,7 +1528,6 @@
       let audioCtx = null;
 
       // FUNGSI DETERMINISTIK PRNG (Pseudo-Random Number Generator) BERBASIS SEED
-      // Digunakan agar soal harian acak, tapi seragam di hari yang sama untuk level tsb.
       function createPRNG(seed) {
         let h = seed ^ 0xdeadbeef;
         return function () {
@@ -1500,7 +1544,6 @@
         for (let i = 0; i < subject.length; i++) {
           subjHash += subject.charCodeAt(i);
         }
-        // Seed unik tiap hari per kelas, per pelajaran, per level
         return (
           d.getFullYear() * 10000 +
           (d.getMonth() + 1) * 100 +
@@ -1636,7 +1679,7 @@
         ],
       };
 
-      // DATABASE ABJAD INTERAKTIF (A-Z) - TETAP KONSISTEN UNTUK SOUNDBOARD
+      // DATABASE ABJAD INTERAKTIF (A-Z)
       const ALPHABET_DATA = [
         {
           char: "A",
@@ -1817,19 +1860,19 @@
                 let ans = a + b;
                 qText = `Berapakah hasil dari penjumlahan: ${a} + ${b}?`;
                 helpers = "⭐".repeat(a) + " + " + "⭐".repeat(b);
-                opts = [ans - 1, ans, ans + 1, ans + 2].map(String);
+                opts = [ans, ans - 1, ans + 1, ans + 2].map(String);
               } else if (level == 2) {
                 let a = Math.floor(rand() * 6) + 10;
                 let b = Math.floor(rand() * 5) + 1;
                 let ans = a - b;
                 qText = `Berapakah hasil pengurangan dari: ${a} - ${b}?`;
-                opts = [ans + 1, ans - 1, ans, ans + 2].map(String);
+                opts = [ans, ans + 1, ans - 1, ans + 2].map(String);
               } else {
                 let a = Math.floor(rand() * 8) + 10;
                 let b = Math.floor(rand() * 6) + 2;
                 let ans = a + b;
                 qText = `Budi memiliki ${a} buah apel, Ibu memberikan lagi ${b} buah apel. Berapa jumlah apel Budi sekarang?`;
-                opts = [ans - 2, ans + 2, ans, ans + 1].map(String);
+                opts = [ans, ans - 2, ans + 2, ans + 1].map(String);
               }
             } else if (grade == 2) {
               if (level == 1) {
@@ -1843,7 +1886,7 @@
                 let b = Math.floor(rand() * 4) + 2;
                 let ans = a * b;
                 qText = `Berapakah hasil perkalian dasar dari: ${a} x ${b}?`;
-                opts = [ans - 2, ans + 3, ans, ans + 1].map(String);
+                opts = [ans, ans - 2, ans + 3, ans + 1].map(String);
               } else {
                 let isSegitiga = rand() > 0.5;
                 qText = `Bangun datar yang memiliki ${isSegitiga ? "3" : "4"} buah sudut dan ${isSegitiga ? "3" : "4"} buah sisi lurus dinamakan...`;
@@ -1863,12 +1906,12 @@
                 let b = Math.floor(rand() * 5) + 3;
                 let ans = a * b;
                 qText = `Hitunglah hasil perkalian dari: ${a} x ${b}?`;
-                opts = [ans + 4, ans, ans - 2, ans + 10].map(String);
+                opts = [ans, ans + 4, ans - 2, ans + 10].map(String);
               } else if (level == 2) {
                 let side = Math.floor(rand() * 4) + 6;
                 let ans = side * 4;
                 qText = `Keliling persegi dengan panjang sisi ${side} cm adalah...`;
-                opts = [ans - 4, ans, ans + 4, ans * 2].map(String);
+                opts = [ans, ans - 4, ans + 4, ans * 2].map(String);
                 helpers = "⬜";
               } else {
                 let bills = Math.floor(rand() * 3) + 2;
@@ -1876,32 +1919,25 @@
                 let ans = bills * value;
                 qText = `Berapakah total nilai uang jika kamu memiliki ${bills} lembar pecahan uang Rp 5.000?`;
                 opts = [
+                  `Rp ${ans}`,
                   `Rp ${ans - 2000}`,
                   `Rp ${ans + 5000}`,
-                  `Rp ${ans}`,
                   `Rp ${ans + 10000}`,
                 ];
                 helpers = "💵";
               }
             } else {
-              // Grade 4 - 6
               let valA = Math.floor(rand() * 20) + 10;
               let valB = Math.floor(rand() * 10) + 5;
               let ans = valA * valB;
               qText = `[Kelas ${grade}] Berapakah hasil perkalian dari ${valA} x ${valB}?`;
-              opts = [ans - 10, ans + 5, ans, ans + 15].map(String);
+              opts = [ans, ans - 10, ans + 5, ans + 15].map(String);
             }
-            correctIdx = opts.indexOf(
-              String(
-                eval(opts.includes(String(correctIdx)) ? correctIdx : opts[0]),
-              ),
-            ); // fallback
           }
 
-          // 2. BAHASA INGGRIS DYNAMIC GENERATOR (Mendukung full Text-To-Speech)
+          // 2. BAHASA INGGRIS DYNAMIC GENERATOR
           else if (subject === "english") {
             if (level == 1) {
-              // Kuis terjemahan kata dasar
               const isEnToId = rand() > 0.5;
               const vocabType = rand() > 0.5 ? "animals" : "colors";
               const item =
@@ -1932,7 +1968,6 @@
               }
               helpers = item.em || "";
             } else if (level == 2) {
-              // Kuis kalimat berlubang / konteks objek & anggota keluarga
               const vocabType = rand() > 0.5 ? "objects" : "family";
               const item =
                 ENGLISH_VOCAB[vocabType][
@@ -1956,7 +1991,6 @@
               }
               helpers = item.em || "";
             } else {
-              // Kuis antonim & kata kerja dinamis tingkat lanjut
               const verb =
                 ENGLISH_VOCAB.verbs[
                   Math.floor(rand() * ENGLISH_VOCAB.verbs.length)
@@ -1977,7 +2011,6 @@
           // 3. BAHASA INDONESIA DYNAMIC GENERATOR
           else if (subject === "indonesia") {
             if (level == 1) {
-              // Melengkapi ejaan & sinonim dasar
               const item =
                 BI_TEMPLATES.synonyms[
                   Math.floor(rand() * BI_TEMPLATES.synonyms.length)
@@ -1985,7 +2018,6 @@
               qText = `Manakah kata di bawah ini yang memiliki persamaan makna (sinonim) dengan kata '${item.w}'?`;
               opts = [item.s, ...item.o];
             } else if (level == 2) {
-              // Lawan kata dan tatabahasa dasar
               const item =
                 BI_TEMPLATES.antonims[
                   Math.floor(rand() * BI_TEMPLATES.antonims.length)
@@ -1993,7 +2025,6 @@
               qText = `Apakah lawan kata (antonim) yang paling tepat untuk kata '${item.w}'?`;
               opts = [item.a, ...item.o];
             } else {
-              // Dongeng fabel ceria
               const item =
                 BI_TEMPLATES.fables[
                   Math.floor(rand() * BI_TEMPLATES.fables.length)
@@ -2036,7 +2067,6 @@
                 ];
               }
             } else {
-              // Kelas 4-6 (Ada konten sejarah Indonesia)
               if (level == 1) {
                 qText =
                   "Siapakah nama Bapak Proklamator sekaligus Presiden pertama Republik Indonesia?";
@@ -2105,7 +2135,7 @@
 
       // STATE PERMAINAN GLOBAL
       let gameState = {
-        playerName: "Budi",
+        playerName: "", // DIUBAH: Kosong secara bawaan
         grade: 1,
         avatarId: "dino",
         avatarEmoji: "🦖",
@@ -2132,7 +2162,7 @@
         if (saved) {
           try {
             const parsed = JSON.parse(saved);
-            gameState.playerName = parsed.playerName || "Budi";
+            gameState.playerName = parsed.playerName || ""; // DIUBAH: Tetap kosong jika tidak ada save data
             gameState.grade = parsed.grade || 1;
             gameState.avatarId = parsed.avatarId || "dino";
             gameState.avatarEmoji = parsed.avatarEmoji || "🦖";
@@ -2158,14 +2188,12 @@
 
       window.onload = function () {
         loadSavedProgress();
-
         document.getElementById("playerName").value = gameState.playerName;
         selectGrade(gameState.grade);
         selectAvatar(
           gameState.avatarId,
           gameState.avatarEmoji + " " + gameState.avatarName,
         );
-
         updateSubjectMapStatuses();
         updateSettingsUI();
         initAudio();
@@ -2225,7 +2253,18 @@
 
       function startGame() {
         const inputName = document.getElementById("playerName").value.trim();
-        gameState.playerName = inputName ? inputName : "Pahlawan";
+
+        // DIUBAH: Validasi wajib isi nama menggunakan alert bergaya ramah anak
+        if (inputName === "") {
+          playSound("wrong");
+          alert(
+            "Eits! Isi namamu dulu yuk di kolom nama, supaya Kakak bisa panggil namamu di dalam game! 😊",
+          );
+          document.getElementById("playerName").focus();
+          return;
+        }
+
+        gameState.playerName = inputName;
 
         playSound("fanfare");
         saveProgress();
@@ -2254,7 +2293,6 @@
 
       function updateSubjectMapStatuses() {
         let subjects = ["matematika", "english", "indonesia", "ppkn"];
-
         const cardMembaca = document.getElementById("card-membaca");
         const cardAbjad = document.getElementById("card-abjad");
 
@@ -2314,7 +2352,6 @@
         });
       }
 
-      // FUNGSI KHUSUS PAPAN ABJAD INTERAKTIF
       function openAbjadBoard() {
         playSound("click");
         document.getElementById("screen-subjects").classList.add("hidden");
@@ -2360,7 +2397,6 @@
         });
       }
 
-      // Pelafalan Abjad dalam Bahasa Indonesia
       function speakAlphabetLetter(item) {
         playSound("click");
         if ("speechSynthesis" in window) {
@@ -2377,19 +2413,10 @@
             (v) =>
               v.lang.startsWith("id") &&
               (v.name.toLowerCase().includes("indonesia") ||
-                v.name.toLowerCase().includes("female") ||
-                v.name.toLowerCase().includes("gadis") ||
-                v.name.toLowerCase().includes("putri") ||
-                v.name.toLowerCase().includes("sari")),
+                v.name.toLowerCase().includes("female")),
           );
 
-          if (idVoice) {
-            utterance.voice = idVoice;
-          } else {
-            const basicIdVoice = voices.find((v) => v.lang.startsWith("id"));
-            if (basicIdVoice) utterance.voice = basicIdVoice;
-          }
-
+          if (idVoice) utterance.voice = idVoice;
           window.speechSynthesis.speak(utterance);
         }
       }
@@ -2429,10 +2456,8 @@
         };
 
         renderLevelButtonUI(1, true, record.level1);
-        const level2Unlocked = record.level1 > 0;
-        renderLevelButtonUI(2, level2Unlocked, record.level2);
-        const level3Unlocked = record.level2 > 0;
-        renderLevelButtonUI(3, level3Unlocked, record.level3);
+        renderLevelButtonUI(2, record.level1 > 0, record.level2);
+        renderLevelButtonUI(3, record.level2 > 0, record.level3);
 
         document.getElementById("levelModal").classList.remove("hidden");
         document.getElementById("levelModal").classList.add("flex");
@@ -2538,7 +2563,6 @@
       }
 
       function loadQuestion() {
-        // Memanggil Generator Soal harian deterministik
         const questions = generateDailyQuestions(
           gameState.grade,
           gameState.currentSubject,
@@ -2555,14 +2579,11 @@
         }
 
         const currentQ = questions[gameState.currentQuestionIdx];
-
-        // Setup panel audio pendengaran bahasa Inggris
         const listeningPanel = document.getElementById("listening-panel");
+
         if (gameState.currentSubject === "english") {
           listeningPanel.classList.remove("hidden");
           listeningPanel.classList.add("flex");
-
-          // Memicu audio panduan ceria di awal soal
           setTimeout(() => {
             speakCurrentQuestion();
           }, 400);
@@ -2571,7 +2592,6 @@
           listeningPanel.classList.remove("flex");
         }
 
-        // Memperbarui UI Progress Bar & Notasi
         document.getElementById("question-progress-text").innerText =
           `${gameState.currentQuestionIdx + 1} / ${questions.length}`;
         const percent =
@@ -2582,10 +2602,7 @@
         document.getElementById("progress-icon").innerText =
           gameState.avatarEmoji;
 
-        // Masukkan teks soal utama ke layar
         document.getElementById("question-text").innerText = currentQ.q;
-
-        // Setup bubble teks maskot
         document.getElementById("mascot-comment-emoji").innerText =
           gameState.avatarEmoji;
         document.getElementById("mascot-comment-name").innerText =
@@ -2603,7 +2620,6 @@
             ? `"Gunakan petunjuk bergambar di bawah ya!"`
             : dynamicTips[gameState.currentQuestionIdx % dynamicTips.length];
 
-        // Render visual helper emoji
         const helperContainer = document.getElementById("visual-helper");
         if (currentQ.helpers) {
           helperContainer.innerText = currentQ.helpers;
@@ -2612,7 +2628,6 @@
           helperContainer.classList.add("hidden");
         }
 
-        // Memasang tombol-tombol opsi jawaban kuis yang responsif
         const optionBtns = document.querySelectorAll(".option-btn");
         optionBtns.forEach((btn, index) => {
           btn.className =
@@ -2622,7 +2637,6 @@
             btn.style.display = "flex";
             btn.querySelector(".option-content").innerText =
               currentQ.options[index];
-
             btn.onclick = function () {
               checkAnswer(index, btn, questions);
             };
@@ -2630,10 +2644,6 @@
             btn.style.display = "none";
           }
         });
-      }
-
-      if ("speechSynthesis" in window) {
-        window.speechSynthesis.onvoiceschanged = () => {};
       }
 
       function speakCurrentQuestion() {
@@ -2648,12 +2658,10 @@
             window.speechSynthesis.cancel();
             playCuteSparkleChime();
 
-            // Bersihkan karakter emoji dari teks soal agar tidak dieja
             const cleanText = currentQ.q.replace(
               /[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF]/g,
               "",
             );
-
             const femaleGreetings = [
               "Hello sweetheart! Let's listen closely! ",
               "Oh, look! Ready for this? Let's read: ",
@@ -2668,44 +2676,18 @@
 
             const utterance = new SpeechSynthesisUtterance(fullSpokenText);
             utterance.lang = "en-US";
-
-            // Mengambil preferensi pengisi suara perempuan dari panel pengaturan
             utterance.pitch = gameState.voicePitch;
             utterance.rate = gameState.voiceRate;
 
             const voices = window.speechSynthesis.getVoices();
-            const femaleKeywords = [
-              "samantha",
-              "victoria",
-              "google us english",
-              "zira",
-              "hazel",
-              "karen",
-              "moira",
-              "tessa",
-              "female",
-              "girl",
-              "gadis",
-            ];
-            let engVoice = voices.find((v) => {
-              const name = v.name.toLowerCase();
-              return (
-                (v.lang.startsWith("en-US") ||
-                  v.lang.startsWith("en-GB") ||
-                  v.lang.startsWith("en-")) &&
-                femaleKeywords.some((keyword) => name.includes(keyword))
-              );
-            });
-
-            if (!engVoice) {
-              engVoice = voices.find(
-                (v) => v.lang.startsWith("en-US") || v.lang.startsWith("en"),
-              );
-            }
-
-            if (engVoice) {
-              utterance.voice = engVoice;
-            }
+            let engVoice = voices.find(
+              (v) =>
+                v.lang.startsWith("en-US") &&
+                v.name.toLowerCase().includes("female"),
+            );
+            if (!engVoice)
+              engVoice = voices.find((v) => v.lang.startsWith("en"));
+            if (engVoice) utterance.voice = engVoice;
 
             const mascotEmoji = document.getElementById("mascot-comment-emoji");
             const mascotBubble = document.getElementById(
@@ -2718,12 +2700,9 @@
                 mascotEmoji.classList.remove("animate-bounce-playful");
                 mascotEmoji.classList.add("animate-speak");
               }
-              if (notesContainer) {
-                notesContainer.classList.remove("hidden");
-              }
-              if (mascotBubble) {
+              if (notesContainer) notesContainer.classList.remove("hidden");
+              if (mascotBubble)
                 mascotBubble.innerHTML = `🗣️ <span class="text-indigo-600 font-bold">"Dengarkan Kakak Guru sedang berbicara ya!"</span> 🎵`;
-              }
             };
 
             utterance.onend = function () {
@@ -2731,24 +2710,11 @@
                 mascotEmoji.classList.remove("animate-speak");
                 mascotEmoji.classList.add("animate-bounce-playful");
               }
-              if (notesContainer) {
-                notesContainer.classList.add("hidden");
-              }
-              if (mascotBubble) {
+              if (notesContainer) notesContainer.classList.add("hidden");
+              if (mascotBubble)
                 mascotBubble.innerText = currentQ.helpers
                   ? `"Gunakan petunjuk bergambar di bawah ya!"`
                   : `"Kamu pasti bisa menjawab ini! Semangat ya!"`;
-              }
-            };
-
-            utterance.onerror = function () {
-              if (mascotEmoji) {
-                mascotEmoji.classList.remove("animate-speak");
-                mascotEmoji.classList.add("animate-bounce-playful");
-              }
-              if (notesContainer) {
-                notesContainer.classList.add("hidden");
-              }
             };
 
             setTimeout(() => {
@@ -2775,7 +2741,6 @@
             "bg-emerald-500",
             "text-white",
             "border-emerald-600",
-            "scale-102",
           );
           gameState.score += 10;
 
@@ -2797,7 +2762,6 @@
             "bg-rose-500",
             "text-white",
             "border-rose-600",
-            "scale-98",
           );
 
           optionBtns[currentQ.correct].classList.remove(
@@ -2853,7 +2817,6 @@
           gameState.completedSubjects[subject][levelKey] || 0,
           starsEarned,
         );
-
         saveProgress();
 
         document.getElementById("victory-congratulations").innerText =
@@ -2971,10 +2934,10 @@
           if (levelsCompleted > 0) {
             badgeClass = "border-amber-300 bg-amber-50/50";
             if (totalStars === 9) {
-              badgeStatusText = "🏅 Emas Mutlak (3 Level Perfect!)";
+              badgeStatusText = "🏅 Emas Mutlak";
               starIcons = "⭐⭐⭐";
             } else if (levelsCompleted === 3) {
-              badgeStatusText = "🥈 Perak (Semua Level)";
+              badgeStatusText = "🥈 Perak";
               starIcons = "⭐⭐☆";
             } else {
               badgeStatusText = "🥉 Perunggu";
@@ -3003,7 +2966,6 @@
         document.getElementById("badgesModal").classList.add("hidden");
       }
 
-      // FUNGSI NAVIGASI MODAL SETTINGS & INFO
       function showSettingsModal() {
         playSound("click");
         updateSettingsUI();
@@ -3053,27 +3015,11 @@
           const btn = document.getElementById(rateIds[idx]);
           if (btn) {
             if (Math.abs(gameState.voiceRate - r) < 0.05) {
-              btn.classList.add(
-                "bg-indigo-600",
-                "text-white",
-                "border-indigo-600",
-              );
-              btn.classList.remove(
-                "bg-white",
-                "text-indigo-700",
-                "border-indigo-100",
-              );
+              btn.className =
+                "py-1.5 px-1 rounded-lg border-2 text-[9px] sm:text-[10px] font-bold text-center bg-indigo-600 text-white border-indigo-600";
             } else {
-              btn.classList.remove(
-                "bg-indigo-600",
-                "text-white",
-                "border-indigo-600",
-              );
-              btn.classList.add(
-                "bg-white",
-                "text-indigo-700",
-                "border-indigo-100",
-              );
+              btn.className =
+                "py-1.5 px-1 rounded-lg border-2 text-[9px] sm:text-[10px] font-bold text-center bg-white border-indigo-100 text-indigo-700";
             }
           }
         });
@@ -3088,46 +3034,24 @@
           const btn = document.getElementById(pitchIds[idx]);
           if (btn) {
             if (Math.abs(gameState.voicePitch - p) < 0.05) {
-              btn.classList.add(
-                "bg-indigo-600",
-                "text-white",
-                "border-indigo-600",
-              );
-              btn.classList.remove(
-                "bg-white",
-                "text-indigo-700",
-                "border-indigo-100",
-              );
+              btn.className =
+                "py-1.5 px-1 rounded-lg border-2 text-[9px] sm:text-[10px] font-bold text-center bg-indigo-600 text-white border-indigo-600";
             } else {
-              btn.classList.remove(
-                "bg-indigo-600",
-                "text-white",
-                "border-indigo-600",
-              );
-              btn.classList.add(
-                "bg-white",
-                "text-indigo-700",
-                "border-indigo-100",
-              );
+              btn.className =
+                "py-1.5 px-1 rounded-lg border-2 text-[9px] sm:text-[10px] font-bold text-center bg-white border-indigo-100 text-indigo-700";
             }
           }
         });
 
         const mToggle = document.getElementById("modalSoundToggle");
         if (mToggle) {
-          if (soundEnabled) {
-            mToggle.innerText = "Aktif";
-            mToggle.className =
-              "px-4 py-1.5 rounded-full font-bold text-[10px] sm:text-xs bg-emerald-500 text-white shadow-sm bubble-btn cursor-pointer";
-          } else {
-            mToggle.innerText = "Mati";
-            mToggle.className =
-              "px-4 py-1.5 rounded-full font-bold text-[10px] sm:text-xs bg-rose-500 text-white shadow-sm bubble-btn cursor-pointer";
-          }
+          mToggle.innerText = soundEnabled ? "Aktif" : "Mati";
+          mToggle.className = soundEnabled
+            ? "px-4 py-1.5 rounded-full font-bold text-[10px] sm:text-xs bg-emerald-500 text-white shadow-sm bubble-btn cursor-pointer"
+            : "px-4 py-1.5 rounded-full font-bold text-[10px] sm:text-xs bg-rose-500 text-white shadow-sm bubble-btn cursor-pointer";
         }
       }
 
-      // RESET PROGRES DUA KALI TEKAN (Aman dari pembatasan browser)
       let resetConfirmState = false;
       function resetAllGameProgress(btn) {
         if (!resetConfirmState) {
@@ -3135,7 +3059,6 @@
           btn.innerText = "Yakin? Klik Lagi!";
           btn.classList.add("animate-pulse");
           resetConfirmState = true;
-
           setTimeout(() => {
             if (resetConfirmState) {
               btn.innerText = "Hapus Data";
@@ -3148,7 +3071,7 @@
           localStorage.removeItem("smartkids_adventure_save_v6");
 
           gameState = {
-            playerName: "Budi",
+            playerName: "",
             grade: 1,
             avatarId: "dino",
             avatarEmoji: "🦖",
@@ -3170,10 +3093,9 @@
             },
           };
 
-          document.getElementById("playerName").value = "Budi";
+          document.getElementById("playerName").value = "";
           selectGrade(1);
           selectAvatar("dino", "🦖 Dino");
-
           saveProgress();
           updateSettingsUI();
           updateSubjectMapStatuses();
@@ -3190,17 +3112,14 @@
       }
 
       function initAudio() {
-        if (!audioCtx) {
+        if (!audioCtx)
           audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        }
       }
 
       function playCuteSparkleChime() {
         if (!soundEnabled) return;
         initAudio();
-        if (audioCtx.state === "suspended") {
-          audioCtx.resume();
-        }
+        if (audioCtx.state === "suspended") audioCtx.resume();
         const now = audioCtx.currentTime;
         const sparkleNotes = [1046.5, 1318.51, 1567.98, 1975.53, 2093.0];
         sparkleNotes.forEach((freq, idx) => {
@@ -3209,7 +3128,6 @@
           sparkleOsc.connect(sparkleGain);
           sparkleGain.connect(audioCtx.destination);
           sparkleOsc.type = "sine";
-
           sparkleOsc.frequency.setValueAtTime(freq, now + idx * 0.07);
           sparkleGain.gain.setValueAtTime(0.06, now + idx * 0.07);
           sparkleGain.gain.exponentialRampToValueAtTime(
@@ -3224,9 +3142,7 @@
       function playSound(type) {
         if (!soundEnabled) return;
         initAudio();
-        if (audioCtx.state === "suspended") {
-          audioCtx.resume();
-        }
+        if (audioCtx.state === "suspended") audioCtx.resume();
 
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
@@ -3323,7 +3239,6 @@
       function initConfetti() {
         const canvas = document.getElementById("victoryConfetti");
         const ctx = canvas.getContext("2d");
-
         canvas.width = canvas.parentElement.clientWidth;
         canvas.height = canvas.parentElement.clientHeight;
 
@@ -3354,7 +3269,6 @@
 
         function draw() {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
-
           particles.forEach((p, index) => {
             p.tiltAngle += p.tiltAngleIncremental;
             p.y += (Math.cos(p.d) + 3 + p.r / 2) / 2;
@@ -3384,7 +3298,6 @@
         }
 
         confettiInterval = setInterval(draw, 24);
-
         setTimeout(() => {
           clearInterval(confettiInterval);
           ctx.clearRect(0, 0, canvas.width, canvas.height);
