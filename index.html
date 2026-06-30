@@ -1258,6 +1258,12 @@
       </section>
     </main>
 
+    <p
+      class="text-center text-[10px] sm:text-xs text-indigo-900/50 font-semibold mt-3 z-10 tracking-wide select-none"
+    >
+      ✨ Design by: Rizki Maulana Yulianto ✨
+    </p>
+
     <div
       id="levelModal"
       class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4 z-50"
@@ -1462,6 +1468,37 @@
               >Jaga nyawa kamu (3 hati). Raih bintang 3 dengan menjawab semua
               pertanyaan dengan benar!</span
             >
+          </p>
+        </div>
+
+        <div
+          class="mt-4 pt-3 border-t-2 border-dashed border-indigo-100 text-center"
+        >
+          <p class="text-xs sm:text-sm font-black text-indigo-700">
+            ☕ Dukung Developer
+          </p>
+          <p class="text-[10px] sm:text-xs text-gray-500 mt-0.5 mb-2">
+            Suka dengan aplikasi ini? Boleh banget traktir kopi lewat DANA,
+            sepenuhnya sukarela ya! 😊
+          </p>
+          <div
+            class="flex items-center justify-center gap-2 bg-indigo-50 border border-indigo-100 rounded-xl px-3 py-2"
+          >
+            <span class="text-base sm:text-lg">💙</span>
+            <span
+              id="dana-number-text"
+              class="font-mono font-bold text-indigo-800 text-sm sm:text-base tracking-wide"
+              >0896-1147-2878</span
+            >
+            <button
+              onclick="copyDanaNumber()"
+              class="ml-1 bg-indigo-500 hover:bg-indigo-600 text-white text-[10px] sm:text-xs font-bold px-2.5 py-1.5 rounded-lg bubble-btn shrink-0"
+            >
+              <i class="fas fa-copy"></i> Salin
+            </button>
+          </div>
+          <p class="text-[9px] sm:text-[10px] text-gray-400 mt-1.5 italic">
+            a.n. Rizki Maulana Yulianto — Terima kasih atas dukunganmu! 🙏
           </p>
         </div>
       </div>
@@ -3550,6 +3587,47 @@
       function closeInfoModal() {
         playSound("click");
         document.getElementById("infoModal").classList.add("hidden");
+      }
+
+      function copyDanaNumber() {
+        playSound("click");
+        const number = "089611472878";
+        const showCopied = () => {
+          const el = document.getElementById("dana-number-text");
+          if (!el) return;
+          const original = el.innerText;
+          el.innerText = "Tersalin! ✅";
+          setTimeout(() => {
+            el.innerText = original;
+          }, 1500);
+        };
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard
+            .writeText(number)
+            .then(showCopied)
+            .catch(() => {
+              fallbackCopyText(number);
+              showCopied();
+            });
+        } else {
+          fallbackCopyText(number);
+          showCopied();
+        }
+      }
+
+      function fallbackCopyText(text) {
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        try {
+          document.execCommand("copy");
+        } catch (e) {}
+        document.body.removeChild(textarea);
       }
 
       function setVoiceRate(rate) {
