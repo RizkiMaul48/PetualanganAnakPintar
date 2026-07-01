@@ -1,0 +1,1784 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard — Anak Pintar Adventure</title>
+    <link rel="icon" type="image/png" href="new logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ── RESET & BASE ── */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --bg: #0d1117;
+        --surface: #161b22;
+        --surface2: #21262d;
+        --border: #30363d;
+        --accent: #7c3aed;
+        --accent2: #a78bfa;
+        --green: #22c55e;
+        --amber: #f59e0b;
+        --red: #ef4444;
+        --sky: #38bdf8;
+        --text: #e6edf3;
+        --muted: #8b949e;
+        --font: "Inter", sans-serif;
+        --mono: "JetBrains Mono", monospace;
+      }
+      body {
+        font-family: var(--font);
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* ── LOGIN SCREEN ── */
+      #login-screen {
+        width: 100%;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        background: radial-gradient(
+          ellipse at 50% 0%,
+          #1a0a3d 0%,
+          var(--bg) 65%
+        );
+      }
+      #login-screen.hidden {
+        display: none;
+      }
+
+      .login-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 40px 36px;
+        width: 100%;
+        max-width: 400px;
+        box-shadow: 0 25px 60px rgba(124, 58, 237, 0.25);
+      }
+      .login-logo {
+        font-size: 48px;
+        text-align: center;
+        margin-bottom: 8px;
+      }
+      .login-title {
+        text-align: center;
+        font-size: 22px;
+        font-weight: 800;
+        color: var(--text);
+        margin-bottom: 4px;
+      }
+      .login-sub {
+        text-align: center;
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 28px;
+      }
+      .login-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-bottom: 8px;
+        display: block;
+      }
+      .login-input {
+        width: 100%;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 12px 16px;
+        font-size: 15px;
+        font-family: var(--mono);
+        color: var(--text);
+        outline: none;
+        transition: border-color 0.2s;
+        margin-bottom: 20px;
+        letter-spacing: 0.12em;
+      }
+      .login-input:focus {
+        border-color: var(--accent2);
+      }
+      .login-btn {
+        width: 100%;
+        background: var(--accent);
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        padding: 13px;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          transform 0.1s;
+      }
+      .login-btn:hover {
+        background: #6d28d9;
+      }
+      .login-btn:active {
+        transform: scale(0.98);
+      }
+      .login-error {
+        background: rgba(239, 68, 68, 0.12);
+        border: 1px solid rgba(239, 68, 68, 0.35);
+        color: #fca5a5;
+        border-radius: 8px;
+        padding: 10px 14px;
+        font-size: 13px;
+        font-weight: 500;
+        margin-top: 14px;
+        text-align: center;
+        display: none;
+      }
+      .login-warning {
+        background: rgba(245, 158, 11, 0.1);
+        border: 1px solid rgba(245, 158, 11, 0.3);
+        border-radius: 10px;
+        padding: 10px 14px;
+        font-size: 11px;
+        color: #fcd34d;
+        margin-top: 20px;
+        text-align: center;
+        line-height: 1.5;
+      }
+
+      /* ── DASHBOARD SCREEN ── */
+      #dashboard-screen {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        min-height: 100vh;
+      }
+      #dashboard-screen.active {
+        display: flex;
+      }
+
+      /* Header */
+      .dash-header {
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        padding: 14px 28px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+      .dash-header-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .dash-logo {
+        font-size: 28px;
+      }
+      .dash-title {
+        font-size: 17px;
+        font-weight: 800;
+        color: var(--text);
+        line-height: 1.2;
+      }
+      .dash-title span {
+        display: block;
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--muted);
+        letter-spacing: 0.04em;
+      }
+      .beta-pill {
+        background: var(--amber);
+        color: #78350f;
+        font-size: 10px;
+        font-weight: 800;
+        padding: 3px 8px;
+        border-radius: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .dash-header-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .refresh-btn {
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        color: var(--text);
+        padding: 7px 16px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: background 0.2s;
+      }
+      .refresh-btn:hover {
+        background: #2d333b;
+      }
+      .logout-btn {
+        background: rgba(239, 68, 68, 0.12);
+        border: 1px solid rgba(239, 68, 68, 0.25);
+        color: #fca5a5;
+        padding: 7px 14px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .logout-btn:hover {
+        background: rgba(239, 68, 68, 0.22);
+      }
+
+      /* Change password button */
+      .change-pwd-btn {
+        background: rgba(124, 58, 237, 0.15);
+        border: 1px solid rgba(124, 58, 237, 0.35);
+        color: var(--accent2);
+        padding: 7px 14px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .change-pwd-btn:hover {
+        background: rgba(124, 58, 237, 0.28);
+      }
+
+      /* Delete all button */
+      .delete-all-btn {
+        background: rgba(239, 68, 68, 0.13);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        color: #fca5a5;
+        padding: 7px 14px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .delete-all-btn:hover {
+        background: rgba(239, 68, 68, 0.26);
+      }
+
+      /* Confirm delete modal */
+      .confirm-card {
+        background: var(--surface);
+        border: 1px solid rgba(239, 68, 68, 0.4);
+        border-radius: 20px;
+        padding: 32px 28px;
+        width: 100%;
+        max-width: 380px;
+        box-shadow: 0 30px 70px rgba(239, 68, 68, 0.2);
+        text-align: center;
+        transform: translateY(12px);
+        transition: transform 0.2s;
+      }
+      .modal-overlay.open .confirm-card {
+        transform: translateY(0);
+      }
+      .confirm-icon {
+        font-size: 48px;
+        margin-bottom: 12px;
+      }
+      .confirm-title {
+        font-size: 18px;
+        font-weight: 800;
+        color: var(--text);
+        margin-bottom: 8px;
+      }
+      .confirm-desc {
+        font-size: 13px;
+        color: var(--muted);
+        line-height: 1.6;
+        margin-bottom: 8px;
+      }
+      .confirm-count {
+        font-size: 28px;
+        font-weight: 900;
+        font-family: var(--mono);
+        color: #fca5a5;
+        margin-bottom: 20px;
+      }
+      .confirm-input-wrap {
+        text-align: left;
+        margin-bottom: 18px;
+      }
+      .confirm-actions {
+        display: flex;
+        gap: 10px;
+      }
+      .confirm-cancel {
+        flex: 1;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        color: var(--text);
+        padding: 11px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .confirm-cancel:hover {
+        background: #2d333b;
+      }
+      .confirm-delete {
+        flex: 1;
+        background: var(--red);
+        border: none;
+        color: #fff;
+        padding: 11px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          transform 0.1s;
+        opacity: 0.4;
+        pointer-events: none;
+      }
+      .confirm-delete.ready {
+        opacity: 1;
+        pointer-events: all;
+      }
+      .confirm-delete:hover {
+        background: #dc2626;
+      }
+      .confirm-delete:active {
+        transform: scale(0.97);
+      }
+      .deleting-spinner {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: spin 0.6s linear infinite;
+        vertical-align: middle;
+        margin-right: 6px;
+      }
+
+      /* Real-time flash animation for new row */
+      @keyframes rowFlash {
+        0% {
+          background: rgba(124, 58, 237, 0.25);
+        }
+        100% {
+          background: transparent;
+        }
+      }
+      tr.new-row td {
+        animation: rowFlash 1.5s ease-out forwards;
+      }
+
+      /* Modal overlay */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.65);
+        backdrop-filter: blur(4px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        z-index: 100;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s;
+      }
+      .modal-overlay.open {
+        opacity: 1;
+        pointer-events: all;
+      }
+      .modal-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 32px 28px;
+        width: 100%;
+        max-width: 420px;
+        box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5);
+        transform: translateY(12px);
+        transition: transform 0.2s;
+      }
+      .modal-overlay.open .modal-card {
+        transform: translateY(0);
+      }
+      .modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 22px;
+      }
+      .modal-title {
+        font-size: 17px;
+        font-weight: 800;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .modal-close {
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        color: var(--muted);
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s;
+      }
+      .modal-close:hover {
+        background: #2d333b;
+        color: var(--text);
+      }
+      .modal-label {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-bottom: 7px;
+        display: block;
+      }
+      .modal-input {
+        width: 100%;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 11px 14px;
+        font-size: 14px;
+        font-family: var(--mono);
+        color: var(--text);
+        outline: none;
+        margin-bottom: 16px;
+        transition: border-color 0.2s;
+        letter-spacing: 0.08em;
+      }
+      .modal-input:focus {
+        border-color: var(--accent2);
+      }
+      .modal-input.error {
+        border-color: var(--red);
+      }
+      .modal-save-btn {
+        width: 100%;
+        background: var(--accent);
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        padding: 12px;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          transform 0.1s;
+        margin-top: 4px;
+      }
+      .modal-save-btn:hover {
+        background: #6d28d9;
+      }
+      .modal-save-btn:active {
+        transform: scale(0.98);
+      }
+      .modal-msg {
+        border-radius: 8px;
+        padding: 10px 14px;
+        font-size: 12px;
+        font-weight: 600;
+        text-align: center;
+        margin-top: 12px;
+        display: none;
+      }
+      .modal-msg.success {
+        background: rgba(34, 197, 94, 0.12);
+        border: 1px solid rgba(34, 197, 94, 0.3);
+        color: #86efac;
+      }
+      .modal-msg.fail {
+        background: rgba(239, 68, 68, 0.12);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        color: #fca5a5;
+      }
+      .pwd-strength {
+        height: 4px;
+        border-radius: 4px;
+        background: var(--surface2);
+        margin-top: -10px;
+        margin-bottom: 16px;
+        overflow: hidden;
+      }
+      .pwd-strength-fill {
+        height: 100%;
+        border-radius: 4px;
+        width: 0%;
+        transition:
+          width 0.3s,
+          background 0.3s;
+      }
+      .pwd-hint {
+        font-size: 10px;
+        color: var(--muted);
+        margin-top: -12px;
+        margin-bottom: 16px;
+      }
+      .show-toggle {
+        position: relative;
+      }
+      .show-toggle .eye-btn {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: var(--muted);
+        cursor: pointer;
+        font-size: 15px;
+        padding: 4px;
+        margin-top: -8px;
+      }
+      .show-toggle .modal-input {
+        padding-right: 40px;
+      }
+
+      /* Live indicator */
+      .live-dot {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 11px;
+        color: var(--green);
+        font-weight: 600;
+      }
+      .live-dot::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        background: var(--green);
+        border-radius: 50%;
+        animation: pulse 1.5s infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.3;
+        }
+      }
+
+      /* Main content */
+      .dash-body {
+        flex: 1;
+        padding: 28px;
+        max-width: 1280px;
+        width: 100%;
+        margin: 0 auto;
+      }
+
+      /* Stat cards */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 16px;
+        margin-bottom: 28px;
+      }
+      .stat-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 20px 22px;
+        position: relative;
+        overflow: hidden;
+      }
+      .stat-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+      }
+      .stat-card.purple::before {
+        background: var(--accent2);
+      }
+      .stat-card.green::before {
+        background: var(--green);
+      }
+      .stat-card.amber::before {
+        background: var(--amber);
+      }
+      .stat-card.sky::before {
+        background: var(--sky);
+      }
+
+      .stat-emoji {
+        font-size: 24px;
+        margin-bottom: 12px;
+      }
+      .stat-value {
+        font-size: 34px;
+        font-weight: 900;
+        font-family: var(--mono);
+        color: var(--text);
+        line-height: 1;
+        margin-bottom: 4px;
+      }
+      .stat-label {
+        font-size: 12px;
+        color: var(--muted);
+        font-weight: 500;
+      }
+
+      /* Section heading */
+      .section-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 14px;
+      }
+      .section-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .section-count {
+        font-size: 12px;
+        color: var(--muted);
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        padding: 3px 10px;
+        border-radius: 20px;
+      }
+
+      /* Grade distribution */
+      .grade-bars {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 20px 22px;
+        margin-bottom: 28px;
+      }
+      .grade-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 10px;
+      }
+      .grade-row:last-child {
+        margin-bottom: 0;
+      }
+      .grade-label {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--muted);
+        width: 54px;
+        flex-shrink: 0;
+      }
+      .grade-bar-track {
+        flex: 1;
+        background: var(--surface2);
+        border-radius: 6px;
+        height: 20px;
+        overflow: hidden;
+      }
+      .grade-bar-fill {
+        height: 100%;
+        border-radius: 6px;
+        background: linear-gradient(90deg, var(--accent), var(--accent2));
+        transition: width 0.6s ease;
+        min-width: 0;
+      }
+      .grade-count {
+        font-size: 12px;
+        font-family: var(--mono);
+        font-weight: 700;
+        color: var(--text);
+        width: 28px;
+        text-align: right;
+        flex-shrink: 0;
+      }
+
+      /* Search & filter */
+      .search-bar {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 14px;
+        flex-wrap: wrap;
+      }
+      .search-input {
+        flex: 1;
+        min-width: 200px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 9px 14px;
+        font-size: 13px;
+        color: var(--text);
+        font-family: var(--font);
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      .search-input:focus {
+        border-color: var(--accent2);
+      }
+      .search-input::placeholder {
+        color: var(--muted);
+      }
+      .filter-select {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 9px 14px;
+        font-size: 13px;
+        color: var(--text);
+        font-family: var(--font);
+        outline: none;
+        cursor: pointer;
+      }
+      .filter-select option {
+        background: var(--surface2);
+      }
+
+      /* Table */
+      .table-wrap {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        overflow: hidden;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      thead {
+        background: var(--surface2);
+      }
+      th {
+        padding: 12px 16px;
+        text-align: left;
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        border-bottom: 1px solid var(--border);
+        white-space: nowrap;
+      }
+      td {
+        padding: 13px 16px;
+        font-size: 13px;
+        color: var(--text);
+        border-bottom: 1px solid var(--border);
+        vertical-align: middle;
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+      tr:hover td {
+        background: rgba(255, 255, 255, 0.025);
+      }
+
+      .player-name {
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .grade-badge {
+        background: rgba(124, 58, 237, 0.2);
+        color: var(--accent2);
+        font-size: 11px;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 6px;
+        white-space: nowrap;
+      }
+      .time-text {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .device-text {
+        font-size: 11px;
+        color: var(--muted);
+        max-width: 220px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .new-badge {
+        background: rgba(34, 197, 94, 0.15);
+        color: var(--green);
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 7px;
+        border-radius: 20px;
+        letter-spacing: 0.04em;
+      }
+
+      /* Loading & empty states */
+      .loading-state,
+      .empty-state,
+      .notcfg-state {
+        text-align: center;
+        padding: 60px 24px;
+        color: var(--muted);
+      }
+      .loading-spinner {
+        width: 36px;
+        height: 36px;
+        border: 3px solid var(--border);
+        border-top-color: var(--accent2);
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+        margin: 0 auto 16px;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .empty-icon {
+        font-size: 40px;
+        margin-bottom: 12px;
+      }
+      .empty-text {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: var(--text);
+      }
+      .empty-sub {
+        font-size: 12px;
+      }
+
+      /* Config warning banner */
+      .config-banner {
+        background: rgba(245, 158, 11, 0.1);
+        border: 1px solid rgba(245, 158, 11, 0.3);
+        border-radius: 12px;
+        padding: 16px 20px;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+      }
+      .config-banner-icon {
+        font-size: 20px;
+        flex-shrink: 0;
+      }
+      .config-banner-text {
+        font-size: 13px;
+        color: #fcd34d;
+        line-height: 1.5;
+      }
+      .config-banner-text strong {
+        color: #fef08a;
+      }
+
+      /* Timestamp label */
+      .last-update {
+        text-align: right;
+        font-size: 11px;
+        color: var(--muted);
+        margin-bottom: 8px;
+        font-family: var(--mono);
+      }
+
+      /* Responsive */
+      @media (max-width: 640px) {
+        .dash-body {
+          padding: 16px;
+        }
+        .dash-header {
+          padding: 12px 16px;
+        }
+        th:nth-child(4),
+        td:nth-child(4),
+        th:nth-child(5),
+        td:nth-child(5) {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ══════════════════════════════════════
+         LOGIN SCREEN
+    ══════════════════════════════════════ -->
+    <div id="login-screen">
+      <div class="login-card">
+        <div class="login-logo">🔐</div>
+        <h1 class="login-title">Admin Dashboard</h1>
+        <p class="login-sub">Anak Pintar Adventure · Versi Beta 0.1</p>
+
+        <label class="login-label" for="pwd-input">Kata Sandi</label>
+        <input
+          id="pwd-input"
+          class="login-input"
+          type="password"
+          placeholder="Masukkan kata sandi..."
+          onkeydown="if (event.key === 'Enter') doLogin();"
+          autocomplete="current-password"
+        />
+        <button class="login-btn" onclick="doLogin()">🔓 Masuk</button>
+        <div id="login-error" class="login-error">
+          ❌ Kata sandi salah. Coba lagi.
+        </div>
+        <div class="login-warning">
+          ⚠️ Halaman ini hanya untuk developer.<br />
+          Jangan bagikan link halaman ini kepada siapapun.
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         DASHBOARD SCREEN
+    ══════════════════════════════════════ -->
+    <div id="dashboard-screen">
+      <header class="dash-header">
+        <div class="dash-header-left">
+          <span class="dash-logo">🎒</span>
+          <div>
+            <div class="dash-title">
+              Admin Dashboard
+              <span>Anak Pintar Adventure</span>
+            </div>
+          </div>
+          <span class="beta-pill">Versi Beta 0.1</span>
+        </div>
+        <div class="dash-header-right">
+          <span class="live-dot" id="live-indicator">Menghubungkan...</span>
+          <button class="delete-all-btn" onclick="openDeleteConfirm()">
+            🗑️ Hapus Semua Data
+          </button>
+          <button class="change-pwd-btn" onclick="openChangePwd()">
+            🔑 Ubah Sandi
+          </button>
+          <button class="logout-btn" onclick="doLogout()">Keluar</button>
+        </div>
+      </header>
+
+      <div class="dash-body">
+        <!-- Config warning -->
+        <div class="config-banner" id="config-banner" style="display: none">
+          <span class="config-banner-icon">⚠️</span>
+          <div class="config-banner-text">
+            <strong>Firebase belum dikonfigurasi.</strong> Buka file ini dengan
+            Notepad/VS Code, lalu ganti nilai <code>GANTI_DENGAN_...</code> di
+            bagian <code>FIREBASE_CONFIG</code> dengan konfigurasi proyek
+            Firebase kamu. Panduan lengkap ada di dalam file
+            <strong>Edukasi.html</strong>.
+          </div>
+        </div>
+
+        <!-- Stat cards -->
+        <div class="stats-grid">
+          <div class="stat-card purple">
+            <div class="stat-emoji">👥</div>
+            <div class="stat-value" id="stat-total">—</div>
+            <div class="stat-label">Total Pemain</div>
+          </div>
+          <div class="stat-card green">
+            <div class="stat-emoji">📅</div>
+            <div class="stat-value" id="stat-today">—</div>
+            <div class="stat-label">Hari Ini</div>
+          </div>
+          <div class="stat-card amber">
+            <div class="stat-emoji">🏆</div>
+            <div class="stat-value" id="stat-topgrade">—</div>
+            <div class="stat-label">Kelas Terbanyak</div>
+          </div>
+          <div class="stat-card sky">
+            <div class="stat-emoji">📱</div>
+            <div class="stat-value" id="stat-mobile">—</div>
+            <div class="stat-label">Pengguna Mobile</div>
+          </div>
+        </div>
+
+        <!-- Grade distribution -->
+        <div class="grade-bars">
+          <div class="section-head" style="margin-bottom: 16px">
+            <span class="section-title">📊 Distribusi per Kelas</span>
+          </div>
+          <div id="grade-chart">
+            <div class="loading-state">
+              <div class="loading-spinner"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Player table -->
+        <div class="section-head">
+          <span class="section-title">📋 Daftar Pemain</span>
+          <span class="section-count" id="table-count">memuat...</span>
+        </div>
+
+        <div class="search-bar">
+          <input
+            id="search-input"
+            class="search-input"
+            type="text"
+            placeholder="🔍 Cari nama pemain..."
+            oninput="renderTable()"
+          />
+          <select
+            id="grade-filter"
+            class="filter-select"
+            onchange="renderTable()"
+          >
+            <option value="">Semua Kelas</option>
+            <option value="1">Kelas 1</option>
+            <option value="2">Kelas 2</option>
+            <option value="3">Kelas 3</option>
+            <option value="4">Kelas 4</option>
+            <option value="5">Kelas 5</option>
+            <option value="6">Kelas 6</option>
+          </select>
+          <select
+            id="sort-select"
+            class="filter-select"
+            onchange="renderTable()"
+          >
+            <option value="newest">Terbaru Dulu</option>
+            <option value="oldest">Terlama Dulu</option>
+            <option value="name">Nama (A–Z)</option>
+            <option value="grade">Kelas</option>
+          </select>
+        </div>
+
+        <div class="last-update" id="last-update-text"></div>
+
+        <div class="table-wrap">
+          <div id="table-container">
+            <div class="loading-state">
+              <div class="loading-spinner"></div>
+              <div>Menghubungi Firebase...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         MODAL KONFIRMASI HAPUS SEMUA DATA
+    ══════════════════════════════════════ -->
+    <div
+      class="modal-overlay"
+      id="delete-modal"
+      onclick="closeDeleteOutside(event)"
+    >
+      <div class="confirm-card">
+        <div class="confirm-icon">⚠️</div>
+        <div class="confirm-title">Hapus Semua Data Pemain?</div>
+        <div class="confirm-desc">
+          Tindakan ini akan menghapus <strong>seluruh data pemain</strong> dari
+          Firebase secara permanen dan tidak bisa dibatalkan.
+        </div>
+        <div class="confirm-count" id="delete-count-label">0 data</div>
+        <div class="confirm-input-wrap">
+          <label class="modal-label" for="delete-confirm-input">
+            Ketik <strong style="color: #fca5a5">HAPUS</strong> untuk konfirmasi
+          </label>
+          <input
+            id="delete-confirm-input"
+            class="modal-input"
+            type="text"
+            placeholder='Ketik "HAPUS" di sini...'
+            oninput="checkDeleteWord(this.value)"
+            autocomplete="off"
+          />
+        </div>
+        <div class="confirm-actions">
+          <button class="confirm-cancel" onclick="closeDeleteConfirm()">
+            Batal
+          </button>
+          <button
+            class="confirm-delete"
+            id="confirm-delete-btn"
+            onclick="deleteAllData()"
+          >
+            🗑️ Hapus Sekarang
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         MODAL UBAH KATA SANDI
+    ══════════════════════════════════════ -->
+    <div
+      class="modal-overlay"
+      id="pwd-modal"
+      onclick="closePwdModalOutside(event)"
+    >
+      <div class="modal-card">
+        <div class="modal-header">
+          <span class="modal-title">🔑 Ubah Kata Sandi</span>
+          <button class="modal-close" onclick="closeChangePwd()">✕</button>
+        </div>
+
+        <label class="modal-label" for="old-pwd">Kata Sandi Saat Ini</label>
+        <div class="show-toggle">
+          <input
+            id="old-pwd"
+            class="modal-input"
+            type="password"
+            placeholder="Masukkan sandi lama..."
+            oninput="clearModalMsg()"
+          />
+          <button
+            class="eye-btn"
+            onclick="toggleEye('old-pwd', this)"
+            tabindex="-1"
+          >
+            👁️
+          </button>
+        </div>
+
+        <label class="modal-label" for="new-pwd">Kata Sandi Baru</label>
+        <div class="show-toggle">
+          <input
+            id="new-pwd"
+            class="modal-input"
+            type="password"
+            placeholder="Minimal 6 karakter..."
+            oninput="
+              checkStrength(this.value);
+              clearModalMsg();
+            "
+            onkeydown="
+              if (event.key === 'Enter')
+                document.getElementById('confirm-pwd').focus();
+            "
+          />
+          <button
+            class="eye-btn"
+            onclick="toggleEye('new-pwd', this)"
+            tabindex="-1"
+          >
+            👁️
+          </button>
+        </div>
+        <div class="pwd-strength">
+          <div class="pwd-strength-fill" id="strength-fill"></div>
+        </div>
+        <p class="pwd-hint" id="strength-label">
+          Kekuatan sandi akan muncul di sini
+        </p>
+
+        <label class="modal-label" for="confirm-pwd"
+          >Konfirmasi Kata Sandi Baru</label
+        >
+        <div class="show-toggle">
+          <input
+            id="confirm-pwd"
+            class="modal-input"
+            type="password"
+            placeholder="Ulangi sandi baru..."
+            oninput="clearModalMsg()"
+            onkeydown="if (event.key === 'Enter') saveNewPassword();"
+          />
+          <button
+            class="eye-btn"
+            onclick="toggleEye('confirm-pwd', this)"
+            tabindex="-1"
+          >
+            👁️
+          </button>
+        </div>
+
+        <button class="modal-save-btn" onclick="saveNewPassword()">
+          💾 Simpan Kata Sandi Baru
+        </button>
+        <div class="modal-msg" id="modal-msg"></div>
+
+        <p
+          style="
+            font-size: 10px;
+            color: var(--muted);
+            text-align: center;
+            margin-top: 16px;
+            line-height: 1.5;
+          "
+        >
+          Kata sandi disimpan di browser ini (localStorage).<br />
+          Kalau ganti perangkat, kamu perlu ubah lagi atau edit file HTML-nya.
+        </p>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         JAVASCRIPT
+    ══════════════════════════════════════ -->
+    <script type="module">
+      // ╔══════════════════════════════════════════════════════════════╗
+      // ║  ▼▼▼ GANTI NILAI INI DENGAN KONFIGURASI FIREBASE KAMU ▼▼▼  ║
+      // ╚══════════════════════════════════════════════════════════════╝
+      const FIREBASE_CONFIG = {
+        apiKey: "AIzaSyCDjeaYAe5ErVWyugnFL7u0h8qY_A9w4Zk",
+        authDomain: "aplikasiwebbelajaranakpintar.firebaseapp.com",
+        projectId: "aplikasiwebbelajaranakpintar",
+        storageBucket: "aplikasiwebbelajaranakpintar.firebasestorage.app",
+        messagingSenderId: "46065883012",
+        appId: "1:46065883012:web:6d48e0ab01e8f92f696fd1",
+      };
+      // ▲▲▲ SAMPAI SINI — jangan ubah kode di bawah ▲▲▲
+
+      // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      // KATA SANDI ADMIN
+      // Sandi default (dipakai hanya jika belum pernah diubah)
+      const DEFAULT_PASSWORD = "RizkiAdmin2024";
+      // Ambil sandi dari localStorage, fallback ke default
+      function getActivePassword() {
+        return localStorage.getItem("admin_pwd") || DEFAULT_PASSWORD;
+      }
+      // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        query,
+        orderBy,
+        onSnapshot,
+        writeBatch,
+        getDocs,
+        doc,
+      } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+      let db = null;
+      let allPlayers = [];
+      let unsubscribe = null; // untuk berhenti mendengarkan saat logout
+
+      const isConfigured = !Object.values(FIREBASE_CONFIG).some((v) =>
+        v.startsWith("GANTI_"),
+      );
+
+      if (isConfigured) {
+        try {
+          const app = initializeApp(FIREBASE_CONFIG);
+          db = getFirestore(app);
+        } catch (e) {
+          console.error("Firebase error:", e);
+        }
+      }
+
+      // ── LOGIN ──────────────────────────────────────────
+      window.doLogin = function () {
+        const val = document.getElementById("pwd-input").value;
+        const err = document.getElementById("login-error");
+        if (val === getActivePassword()) {
+          sessionStorage.setItem("admin_auth", "1");
+          document.getElementById("login-screen").classList.add("hidden");
+          document.getElementById("dashboard-screen").classList.add("active");
+          if (!isConfigured) {
+            document.getElementById("config-banner").style.display = "flex";
+            showNotConfigured();
+          } else {
+            startRealtimeListener();
+          }
+        } else {
+          err.style.display = "block";
+          document.getElementById("pwd-input").value = "";
+          document.getElementById("pwd-input").focus();
+          setTimeout(() => {
+            err.style.display = "none";
+          }, 3000);
+        }
+      };
+
+      window.doLogout = function () {
+        if (unsubscribe) {
+          unsubscribe();
+          unsubscribe = null;
+        }
+        sessionStorage.removeItem("admin_auth");
+        location.reload();
+      };
+
+      // ── REAL-TIME LISTENER (onSnapshot) ───────────────
+      function startRealtimeListener() {
+        if (!db) return;
+
+        const liveEl = document.getElementById("live-indicator");
+        liveEl.className = "live-dot";
+        liveEl.innerText = "Menghubungkan...";
+        liveEl.style.color = "";
+
+        const q = query(collection(db, "pemain"), orderBy("waktu", "desc"));
+
+        // Simpan id data sebelumnya untuk deteksi baris baru
+        let prevIds = new Set();
+
+        unsubscribe = onSnapshot(
+          q,
+          (snap) => {
+            const newIds = new Set();
+            const newPlayers = [];
+            snap.forEach((docSnap) => {
+              const d = docSnap.data();
+              newIds.add(docSnap.id);
+              newPlayers.push({
+                id: docSnap.id,
+                nama: d.nama || "Tanpa Nama",
+                kelas: String(d.kelas || "?"),
+                maskot: d.maskot || "",
+                waktu: d.waktu?.toDate ? d.waktu.toDate() : null,
+                perangkat: d.perangkat || "",
+                isNew: !prevIds.has(docSnap.id) && prevIds.size > 0,
+              });
+            });
+
+            prevIds = newIds;
+            allPlayers = newPlayers;
+
+            liveEl.className = "live-dot";
+            liveEl.style.color = "";
+            liveEl.innerText = "Live";
+
+            document.getElementById("last-update-text").innerText =
+              "Diperbarui otomatis · " + new Date().toLocaleString("id-ID");
+
+            renderStats();
+            renderGradeChart();
+            renderTable();
+          },
+          (err) => {
+            console.error(err);
+            liveEl.style.color = "var(--red)";
+            liveEl.innerText = "Koneksi terputus";
+            document.getElementById("table-container").innerHTML = `
+              <div class="empty-state">
+                <div class="empty-icon">⚠️</div>
+                <div class="empty-text">Koneksi ke Firebase terputus</div>
+                <div class="empty-sub">${err.message}</div>
+              </div>`;
+          },
+        );
+      }
+
+      // ── HAPUS SEMUA DATA ───────────────────────────────
+      window.openDeleteConfirm = function () {
+        document.getElementById("delete-confirm-input").value = "";
+        document.getElementById("confirm-delete-btn").classList.remove("ready");
+        document.getElementById("delete-count-label").innerText =
+          `${allPlayers.length} data pemain`;
+        document.getElementById("delete-modal").classList.add("open");
+        setTimeout(
+          () => document.getElementById("delete-confirm-input").focus(),
+          150,
+        );
+      };
+
+      window.closeDeleteConfirm = function () {
+        document.getElementById("delete-modal").classList.remove("open");
+      };
+
+      window.closeDeleteOutside = function (e) {
+        if (e.target === document.getElementById("delete-modal"))
+          closeDeleteConfirm();
+      };
+
+      window.checkDeleteWord = function (val) {
+        const btn = document.getElementById("confirm-delete-btn");
+        if (val.trim().toUpperCase() === "HAPUS") {
+          btn.classList.add("ready");
+        } else {
+          btn.classList.remove("ready");
+        }
+      };
+
+      window.deleteAllData = async function () {
+        if (!db) return;
+        const btn = document.getElementById("confirm-delete-btn");
+        btn.innerHTML = `<span class="deleting-spinner"></span> Menghapus...`;
+        btn.style.pointerEvents = "none";
+
+        try {
+          // Hapus dalam batch (maks 500 per batch)
+          const snap = await getDocs(collection(db, "pemain"));
+          const batchSize = 400;
+          let batch = writeBatch(db);
+          let count = 0;
+
+          for (const docSnap of snap.docs) {
+            batch.delete(doc(db, "pemain", docSnap.id));
+            count++;
+            if (count % batchSize === 0) {
+              await batch.commit();
+              batch = writeBatch(db);
+            }
+          }
+          if (count % batchSize !== 0) await batch.commit();
+
+          closeDeleteConfirm();
+          // onSnapshot akan otomatis memperbarui tampilan
+        } catch (e) {
+          console.error(e);
+          btn.innerHTML = "❌ Gagal — coba lagi";
+          btn.style.pointerEvents = "all";
+        }
+      };
+      window.openChangePwd = function () {
+        document.getElementById("old-pwd").value = "";
+        document.getElementById("new-pwd").value = "";
+        document.getElementById("confirm-pwd").value = "";
+        document.getElementById("strength-fill").style.width = "0%";
+        document.getElementById("strength-label").innerText =
+          "Kekuatan sandi akan muncul di sini";
+        clearModalMsg();
+        ["old-pwd", "new-pwd", "confirm-pwd"].forEach((id) =>
+          document.getElementById(id).classList.remove("error"),
+        );
+        document.getElementById("pwd-modal").classList.add("open");
+        setTimeout(() => document.getElementById("old-pwd").focus(), 150);
+      };
+
+      window.closeChangePwd = function () {
+        document.getElementById("pwd-modal").classList.remove("open");
+      };
+
+      window.closePwdModalOutside = function (e) {
+        if (e.target === document.getElementById("pwd-modal")) closeChangePwd();
+      };
+
+      window.toggleEye = function (inputId, btn) {
+        const input = document.getElementById(inputId);
+        if (input.type === "password") {
+          input.type = "text";
+          btn.innerText = "🙈";
+        } else {
+          input.type = "password";
+          btn.innerText = "👁️";
+        }
+      };
+
+      window.checkStrength = function (val) {
+        const fill = document.getElementById("strength-fill");
+        const label = document.getElementById("strength-label");
+        if (!val) {
+          fill.style.width = "0%";
+          label.innerText = "Kekuatan sandi akan muncul di sini";
+          label.style.color = "var(--muted)";
+          return;
+        }
+        let score = 0;
+        if (val.length >= 6) score++;
+        if (val.length >= 10) score++;
+        if (/[A-Z]/.test(val)) score++;
+        if (/[0-9]/.test(val)) score++;
+        if (/[^a-zA-Z0-9]/.test(val)) score++;
+
+        const levels = [
+          { w: "15%", bg: "var(--red)", txt: "Terlalu lemah" },
+          { w: "30%", bg: "#f97316", txt: "Lemah" },
+          { w: "55%", bg: "var(--amber)", txt: "Cukup" },
+          { w: "80%", bg: "var(--sky)", txt: "Kuat" },
+          { w: "100%", bg: "var(--green)", txt: "Sangat kuat 💪" },
+        ];
+        const lv = levels[Math.min(score, 4)];
+        fill.style.width = lv.w;
+        fill.style.background = lv.bg;
+        label.innerText = lv.txt;
+        label.style.color = lv.bg;
+      };
+
+      window.clearModalMsg = function () {
+        const msg = document.getElementById("modal-msg");
+        msg.style.display = "none";
+        msg.className = "modal-msg";
+      };
+
+      function showModalMsg(text, type) {
+        const msg = document.getElementById("modal-msg");
+        msg.innerText = text;
+        msg.className = `modal-msg ${type}`;
+        msg.style.display = "block";
+      }
+
+      window.saveNewPassword = function () {
+        const oldVal = document.getElementById("old-pwd").value;
+        const newVal = document.getElementById("new-pwd").value.trim();
+        const confVal = document.getElementById("confirm-pwd").value.trim();
+
+        // Reset error states
+        ["old-pwd", "new-pwd", "confirm-pwd"].forEach((id) =>
+          document.getElementById(id).classList.remove("error"),
+        );
+        clearModalMsg();
+
+        if (oldVal !== getActivePassword()) {
+          document.getElementById("old-pwd").classList.add("error");
+          showModalMsg("❌ Kata sandi lama tidak sesuai.", "fail");
+          document.getElementById("old-pwd").focus();
+          return;
+        }
+        if (newVal.length < 6) {
+          document.getElementById("new-pwd").classList.add("error");
+          showModalMsg("❌ Kata sandi baru minimal 6 karakter.", "fail");
+          document.getElementById("new-pwd").focus();
+          return;
+        }
+        if (newVal !== confVal) {
+          document.getElementById("confirm-pwd").classList.add("error");
+          showModalMsg("❌ Konfirmasi sandi tidak cocok.", "fail");
+          document.getElementById("confirm-pwd").focus();
+          return;
+        }
+        if (newVal === getActivePassword()) {
+          document.getElementById("new-pwd").classList.add("error");
+          showModalMsg(
+            "⚠️ Sandi baru tidak boleh sama dengan sandi lama.",
+            "fail",
+          );
+          return;
+        }
+
+        localStorage.setItem("admin_pwd", newVal);
+        showModalMsg(
+          "✅ Kata sandi berhasil diubah! Silakan login ulang.",
+          "success",
+        );
+
+        setTimeout(() => {
+          closeChangePwd();
+          doLogout();
+        }, 1800);
+      };
+
+      // Auto-login if session still valid
+      if (sessionStorage.getItem("admin_auth") === "1") {
+        document.getElementById("login-screen").classList.add("hidden");
+        document.getElementById("dashboard-screen").classList.add("active");
+        if (!isConfigured) {
+          document.getElementById("config-banner").style.display = "flex";
+          showNotConfigured();
+        } else {
+          startRealtimeListener();
+        }
+      }
+
+      // ── STATS ──────────────────────────────────────────
+      function renderStats() {
+        const total = allPlayers.length;
+        const today = new Date();
+        const todayCount = allPlayers.filter((p) => {
+          if (!p.waktu) return false;
+          return p.waktu.toDateString() === today.toDateString();
+        }).length;
+
+        const gradeCount = {};
+        allPlayers.forEach((p) => {
+          gradeCount[p.kelas] = (gradeCount[p.kelas] || 0) + 1;
+        });
+        const topGrade = Object.entries(gradeCount).sort(
+          (a, b) => b[1] - a[1],
+        )[0];
+
+        const mobileCount = allPlayers.filter((p) =>
+          /android|iphone|ipad|mobile/i.test(p.perangkat),
+        ).length;
+
+        document.getElementById("stat-total").innerText = total;
+        document.getElementById("stat-today").innerText = todayCount;
+        document.getElementById("stat-topgrade").innerText = topGrade
+          ? `Kelas ${topGrade[0]}`
+          : "—";
+        document.getElementById("stat-mobile").innerText = mobileCount;
+      }
+
+      // ── GRADE CHART ────────────────────────────────────
+      function renderGradeChart() {
+        const gradeCount = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
+        allPlayers.forEach((p) => {
+          const k = parseInt(p.kelas);
+          if (k >= 1 && k <= 6) gradeCount[k]++;
+        });
+        const max = Math.max(...Object.values(gradeCount), 1);
+
+        const html = Object.entries(gradeCount)
+          .map(
+            ([grade, count]) => `
+          <div class="grade-row">
+            <span class="grade-label">Kelas ${grade}</span>
+            <div class="grade-bar-track">
+              <div class="grade-bar-fill" style="width:${((count / max) * 100).toFixed(1)}%"></div>
+            </div>
+            <span class="grade-count">${count}</span>
+          </div>
+        `,
+          )
+          .join("");
+        document.getElementById("grade-chart").innerHTML =
+          html ||
+          `<div class="empty-sub" style="text-align:center;padding:20px">Belum ada data</div>`;
+      }
+
+      // ── TABLE ──────────────────────────────────────────
+      window.renderTable = function () {
+        const search = document
+          .getElementById("search-input")
+          .value.toLowerCase()
+          .trim();
+        const gradeF = document.getElementById("grade-filter").value;
+        const sort = document.getElementById("sort-select").value;
+
+        let data = allPlayers.filter((p) => {
+          const matchName = p.nama.toLowerCase().includes(search);
+          const matchGrade = gradeF ? p.kelas === gradeF : true;
+          return matchName && matchGrade;
+        });
+
+        if (sort === "newest")
+          data.sort((a, b) => (b.waktu || 0) - (a.waktu || 0));
+        if (sort === "oldest")
+          data.sort((a, b) => (a.waktu || 0) - (b.waktu || 0));
+        if (sort === "name")
+          data.sort((a, b) => a.nama.localeCompare(b.nama, "id"));
+        if (sort === "grade")
+          data.sort((a, b) => parseInt(a.kelas) - parseInt(b.kelas));
+
+        document.getElementById("table-count").innerText =
+          `${data.length} pemain`;
+
+        if (data.length === 0) {
+          document.getElementById("table-container").innerHTML = `
+            <div class="empty-state">
+              <div class="empty-icon">🔍</div>
+              <div class="empty-text">Tidak ada hasil</div>
+              <div class="empty-sub">Coba ubah kata kunci atau filter</div>
+            </div>`;
+          return;
+        }
+
+        const now = new Date();
+        const rows = data
+          .map((p, i) => {
+            const timeStr = p.waktu
+              ? p.waktu.toLocaleString("id-ID", {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })
+              : "Tidak diketahui";
+
+            const isNew = p.waktu && now - p.waktu < 24 * 60 * 60 * 1000;
+            const isMobile = /android|iphone|ipad|mobile/i.test(p.perangkat);
+            const deviceIcon = isMobile ? "📱" : "💻";
+
+            return `
+            <tr class="${p.isNew ? "new-row" : ""}">
+              <td>
+                <span style="color:var(--muted);font-family:var(--mono);font-size:11px">${i + 1}</span>
+              </td>
+              <td>
+                <div class="player-name">
+                  ${p.maskot ? `<span style="font-size:16px">${p.maskot[0] || ""}</span>` : ""}
+                  ${escHtml(p.nama)}
+                  ${isNew ? '<span class="new-badge">BARU</span>' : ""}
+                </div>
+              </td>
+              <td><span class="grade-badge">Kelas ${escHtml(p.kelas)}</span></td>
+              <td><span class="time-text">${timeStr}</span></td>
+              <td>
+                <span class="device-text" title="${escHtml(p.perangkat)}">
+                  ${deviceIcon} ${isMobile ? "Mobile" : "Desktop/PC"}
+                </span>
+              </td>
+            </tr>`;
+          })
+          .join("");
+
+        document.getElementById("table-container").innerHTML = `
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Nama Pemain</th>
+                <th>Kelas</th>
+                <th>Waktu Bermain</th>
+                <th>Perangkat</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>`;
+      };
+
+      // ── NOT CONFIGURED ─────────────────────────────────
+      function showNotConfigured() {
+        document.getElementById("stat-total").innerText = "?";
+        document.getElementById("stat-today").innerText = "?";
+        document.getElementById("stat-topgrade").innerText = "?";
+        document.getElementById("stat-mobile").innerText = "?";
+        document.getElementById("grade-chart").innerHTML =
+          `<div class="empty-sub" style="text-align:center;padding:16px">Firebase belum dikonfigurasi</div>`;
+        document.getElementById("table-container").innerHTML = `
+          <div class="notcfg-state">
+            <div class="empty-icon">⚙️</div>
+            <div class="empty-text">Firebase Belum Dikonfigurasi</div>
+            <div class="empty-sub">Ganti nilai <code>GANTI_DENGAN_...</code> di dalam file ini dengan konfigurasi Firebase kamu.</div>
+          </div>`;
+        document.getElementById("table-count").innerText = "0 pemain";
+        document.getElementById("live-indicator").style.color = "var(--amber)";
+        document.getElementById("live-indicator").innerText =
+          "Belum dikonfigurasi";
+      }
+
+      // ── UTIL ───────────────────────────────────────────
+      function escHtml(str) {
+        return String(str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      // Blokir akses langsung tanpa login (refresh protection)
+      window.addEventListener("DOMContentLoaded", () => {
+        if (sessionStorage.getItem("admin_auth") !== "1") {
+          document
+            .getElementById("dashboard-screen")
+            .classList.remove("active");
+          document.getElementById("login-screen").classList.remove("hidden");
+        }
+      });
+    </script>
+  </body>
+</html>
